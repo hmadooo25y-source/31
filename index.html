@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تطبيق بنكي متكامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* كود التثبيت */
+        html, body {
+            overflow-x: hidden;
+            overscroll-behavior-y: cover;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            touch-action: manipulation;
+        }
+        input { font-size: 16px !important; }
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            z-index: -1; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="screen-1" class="app-screen">
+        <header class="main-header">
+            <div class="header-left">
+                <div class="menu-bars"><span></span><span></span><span></span></div>
+            </div>
+            <div class="header-right">
+                <div class="header-actions">
+                    <img src="https://i.imgur.com/y6oqw6i.png" class="header-custom-icon qr-trigger">
+                    <div class="notification-container" id="open-notifications" style="cursor: pointer;">
+                        <span class="badge-outline" id="notif-badge">0</span>
+                        <i class="far fa-bell bell-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-body">
+            <div class="white-balance-card">
+                <div class="welcome-text shifted">مرحباً، Marwa Raed Abed Al-Azez<br>Younis</div>
+                <div class="account-type-label shifted medium-weight">حساب الشيقل</div>
+                <div class="balance-line-container-left">
+                    <span class="amount-number-system">44.91</span>
+                    <span class="currency-label-thin">شيقل</span>
+                </div>
+            </div>
+
+            <div class="info-strip-row compact-strip">
+                <span class="strip-label sky-blue-thin">حساب الدولار</span>
+                <span class="strip-value">0.00 دولار أمريكي</span>
+            </div>
+            <div class="info-strip-row compact-strip">
+                <span class="strip-label black-thin">حساب الدينار</span>
+                <span class="strip-value">0.000 دينار أردني</span>
+            </div>
+
+            <div id="toggle-services" class="all-services-title-left">عرض الكل (17)</div>
+            <div id="services-grid" class="services-layout-grid">
+                <div class="service-card"><img src="https://i.imgur.com/D0TBrWi.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/2AyY1bb.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/KUZ3U3P.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/uFu47Ca.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/akR2BaC.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/0rSFcwh.png"></div>
+                <div class="service-card" id="to-s2"><img src="https://i.imgur.com/N8U54KA.png"></div>
+                <div class="service-card" id="to-s7"><img src="https://i.imgur.com/wL8yApL.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/25NHiLB.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/Q9YYfAQ.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/Pq4XHK7.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/ubpbqLa.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/zhISrIX.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/88qkrOi.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/3R4f4xF.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/3ag3hOW.png"></div>
+                <div class="service-card"><img src="https://i.imgur.com/0YTDwuy.png"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="screen-2" class="payment-view" style="display:none;">
+        <header class="main-header">
+            <div class="header-left">
+                <div class="menu-bars" id="back-to-s1" style="cursor: pointer;">
+                    <i class="fas fa-arrow-right" style="color: white; font-size: 19px;"></i>
+                </div>
+            </div>
+        </header>
+        <div class="main-content"> 
+            <div class="container">
+                <h1 class="main-title">الدفع لصديق</h1>
+                <div class="payment-card" id="to-s3">
+                    <img src="https://i.imgur.com/jr0pNcr.png" alt="Payment Icon" class="payment-img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-3" class="friends-view" style="display:none;">
+        <header class="main-header">
+            <div class="header-left">
+                <div class="menu-bars" id="back-to-s2" style="cursor: pointer;">
+                    <i class="fas fa-arrow-right" style="color: white; font-size: 19px;"></i>
+                </div>
+            </div>
+        </header>
+        <div class="main-content"> 
+            <div class="app-wrapper">
+                <h1 class="page-main-title adjusted-title">الأصدقاء</h1>
+                <div class="search-container">
+                    <input type="text" placeholder="بحث" class="search-field">
+                </div>
+                <section class="section">
+                    <h2 class="sub-title thin-title">اخر جهات الاتصال</h2>
+                    <div class="horizontal-scroll no-scrollbar">
+                        <div class="contact-card">
+                            <div class="logo-wrapper hani-logo">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsBGlRu3lHxzkgUR-nnflMv6GdZCm3UooakEJDQAXXAnIy2cNjCbc6h1Qo&s=10" class="card-logo">
+                            </div>
+                            <div class="card-text">
+                                <span class="name-medium main-name">هاني محمد جادالله</span>
+                                <span class="name-medium sub-name">ابو الحصين</span>
+                                <span class="phone-dark-gray">0595056531</span>
+                            </div>
+                        </div>
+                        <div class="contact-card">
+                            <div class="logo-wrapper rajab-logo-xl">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo-2NOar_qcerlGh166EDRRqtax-y9FOS0Kc3sIEkBk078sxawPAvRbAV7&s=10" class="card-logo">
+                            </div>
+                            <div class="card-text">
+                                <span class="name-medium">رجب احمد مصطفى ابر</span>
+                                <span class="phone-dark-gray">598877715</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section">
+                    <h2 class="sub-title thin-title">من جهات الاتصال</h2>
+                    <div class="vertical-list">
+                        <div class="list-item">
+                            <div class="avatar-circle">م م</div>
+                            <div class="contact-info">
+                                <p class="name-dark-gray">محمد وائل محمد مصلح</p>
+                                <p class="phone-dark-gray-large">0597586061</p>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="avatar-circle">ع ع</div>
+                            <div class="contact-info">
+                                <p class="name-dark-gray">عبدالكريم عاشور ضهير</p>
+                                <p class="phone-dark-gray-large">0592852929</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="fab-btn-bright-purple">+</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-4" class="app-screen" style="display:none;">
+        <header class="main-header">
+            <div class="header-left">
+                <div class="menu-bars" id="back-to-s3" style="cursor: pointer;">
+                    <i class="fas fa-arrow-right" style="color: white; font-size: 19px;"></i>
+                </div>
+            </div>
+        </header>
+        <div class="main-content"> 
+            <main class="content" style="padding: 20px;">
+                <h1 class="main-title">صديقك من جهات الاتصال</h1>
+                <div class="form-group">
+                    <input type="text" placeholder="رقم الموبايل" class="input-field">
+                </div>
+                <div class="form-group row">
+                    <input type="text" placeholder="المبلغ" class="input-field amount-input">
+                    <div class="currency-badge">شيكل</div>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="الوصف" class="input-field description-input">
+                </div>
+                <button class="pay-button" id="openSheetBtn">ادفع</button>
+            </main>
+        </div>
+
+        <div class="overlay" id="overlay"></div>
+        <div class="bottom-sheet" id="bottomSheet">
+            <div class="sheet-header no-border">
+                <span class="close-text" id="closeSheetBtn">أغلق</span>
+            </div>
+            <div class="sheet-body">
+                <div class="bank-item" data-target="palestine">
+                    <div class="bank-right-side">
+                        <img src="https://i.imgur.com/gGxRiQb.jpeg" class="bank-logo-xl" alt="Logo">
+                        <span class="bank-name">البنك الاسلامي العربي</span>
+                    </div>
+                </div>
+                <div class="bank-item" data-target="palpay">
+                    <div class="bank-right-side">
+                        <img src="https://i.imgur.com/gGxRiQb.jpeg" class="bank-logo-xl" alt="Logo">
+                        <span class="bank-name">بنك فلسطين</span>
+                    </div>
+                </div>
+                <div class="bank-item no-bottom-border" data-target="palpay-wallet">
+                    <div class="bank-right-side">
+                        <img src="https://i.imgur.com/gGxRiQb.jpeg" class="bank-logo-xl" alt="Logo">
+                        <span class="bank-name">محفظة بال باي</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-5" class="app-screen" style="display:none;">
+        <header class="main-header">
+            <div class="header-left">
+                <div class="menu-bars" id="back-to-s4" style="cursor: pointer;">
+                    <i class="fas fa-arrow-right" style="color: white; font-size: 19px;"></i>
+                </div>
+            </div>
+        </header>
+        <div class="main-content"> 
+            <div class="app-container" style="padding: 20px;">
+                <h1 class="main-title">تأكيد</h1>
+                <div class="transaction-details">
+                    <div class="row">
+                        <span class="label">من حساب</span>
+                        <span class="value">حساب الشيقل</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">إلى</span>
+                        <div class="recipient-info">
+                            <div class="palpay-icon" id="recipientIcon"></div>
+                            <div class="text-group">
+                                <span class="name" id="recipientName">طلعت محمد موسى الفقيعاوي</span>
+                                <span class="phone" id="recipientPhone">0599267682</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-separator">
+                        <span class="label">المبلغ</span>
+                        <span class="value" id="amount-s5">ILS 0</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">العمولة</span>
+                        <span class="value" id="commission-s5">ILS 0.0</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">المبلغ الكلي</span>
+                        <span class="value" id="total-s5">ILS 0.0</span>
+                    </div>
+                </div>
+                <p class="hint-msg">الخطوة التالية لا تتطلب رقم مرور</p>
+                <button id="confirmBtn" class="btn-confirm">تأكيد</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-6" class="app-screen" style="display:none;">
+        <header class="main-header">
+            <div class="header-left"></div>
+            <div class="header-right"></div>
+        </header>
+        <div class="main-content"> 
+            <main class="content-wrapper">
+                <div class="image-section">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGA_XymEMryIOGQdgMkfBGCWU0vbhC82sl_Q&usqp=CAU" alt="صورة إشعار دفع">
+                </div>
+                <div class="success-message">تمت عملية التحويل بنجاح.</div>
+                <div class="data-box">
+                    <div class="receiver-info">
+                        <p class="name" id="display-name">mai kamel amro amro</p>
+                        <p class="phone" id="display-phone">0598267442</p>
+                    </div>
+                    <div class="transaction-details">
+                        <div class="amount-row">
+                            <p class="label">المبلغ</p>
+                            <p class="value" id="display-amount">1.0</p>
+                        </div>
+                        <div class="transaction-row">
+                            <p class="label">رمز العملية</p>
+                            <p class="value" id="display-code">4255</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="confirm-button-container" style="padding: 0 20px 30px;">
+                    <button class="confirm-button" id="finish-button">موافق</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="screen-notifications" class="app-screen" style="display:none; background: #fff;">
+        <header class="main-header">
+            <div class="header-left">
+                <div class="menu-bars" id="back-from-notifications" style="cursor: pointer;">
+                    <i class="fas fa-arrow-right" style="color: white; font-size: 19px;"></i>
+                </div>
+            </div>
+        </header>
+        <div class="main-content">
+            <div class="page-header" style="text-align: center; padding: 25px 0;">
+                <h1 style="color: #8f1b87; font-size: 26px;">الإشعارات</h1>
+            </div>
+            <main id="notifications-list" style="overflow-y: auto; padding: 10px;"></main>
+        </div>
+    </div>
+
+    <div id="screen-7" class="payment-view" style="display:none;">
+        <header class="main-header">
+            <div class="header-left">
+                <div class="menu-bars" id="back-to-s1-from-s7" style="cursor: pointer;">
+                    <i class="fas fa-arrow-right" style="color: white; font-size: 19px;"></i>
+                </div>
+            </div>
+        </header>
+        <div class="main-content"> 
+            <div class="container">
+                <h1 class="main-title">الدفع لتاجر</h1>
+                <div class="horizontal-payments-container">
+                    <div class="payment-card">
+                        <img src="https://i.imgur.com/J3zaJSU.png" alt="Service 1" class="payment-img">
+                    </div>
+                    <div class="payment-card" id="open-scanner-btn">
+                        <img src="https://i.imgur.com/hyGtEXb.png" class="payment-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-8" class="app-screen" style="display:none; background-color: #f2f2f2;">
+        <header class="main-header">
+            <div class="header-left">
+                <div class="menu-bars" id="back-to-s7-from-s8" style="cursor: pointer;">
+                    <i class="fas fa-arrow-right" style="color: white; font-size: 19px;"></i>
+                </div>
+            </div>
+        </header>
+        <div class="main-content" style="padding: 25px 20px; text-align: center;">
+            <h2 style="color: #c02e8a; font-size: 18px; margin-bottom: 30px; font-weight: 600;">تاجر من جهات الاتصال-جديد</h2>
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 30px;">
+                <div style="flex: 1; background: white; border-radius: 10px; padding: 0 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #efefef; height: 42px; display: flex; align-items: center;">
+                    <input type="text" id="merchant-phone-input" placeholder="رقم الموبايل" dir="rtl" style="width: 100%; border: none; outline: none; font-size: 15px; color: #444; font-weight: 600; text-align: right; font-family: 'Cairo', sans-serif; background: transparent;">
+                </div>
+                <div style="display: flex; gap: 8px;">
+                     <div style="width: 42px; height: 42px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #ddd; overflow: hidden;">
+                        <img src="https://i.imgur.com/uinLCTv.png" alt="User" style="width: 55%; height: 100%; object-fit: contain; transform: scale(4);">
+                     </div>
+                     <div style="width: 42px; height: 42px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #ddd; overflow: hidden;">
+                        <img src="https://i.imgur.com/y6oqw6i.png" alt="PalPay" class="qr-trigger" style="width: 130%; height: 130%; object-fit: contain;">
+                     </div>
+                </div>
+            </div>
+            <button id="btn-pay-s8" style="width: 100%; height: 50px; background: linear-gradient(90deg, #5346D2, #8C1C88); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 10px rgba(140, 28, 136, 0.2);">
+                ادفع
+            </button>
+        </div>
+    </div>
+
+    <div id="screen-9" class="app-screen" style="display:none; background:#f2f2f2;">
+        <header class="main-header">
+            <div class="header-left">
+                <div class="menu-bars" id="back-to-s8" style="cursor: pointer;">
+                    <i class="fas fa-arrow-right" style="color: white; font-size: 19px;"></i>
+                </div>
+            </div>
+        </header>
+        <div class="main-content">
+            <div style="padding: 25px 20px;">
+                <h2 style="text-align:center; color:#c02e8a; font-size:18px; margin-bottom:25px; font-weight:600;">الدفع لتاجر</h2>
+                <div style="margin-bottom:10px;">
+                    <input type="text" value="0599332887" style="width:100%; height:44px; border-radius:12px; border:none; background:#ffffff; padding:0 14px; font-size:14px; outline: none;">
+                </div>
+                <div style="margin-bottom:10px;">
+                    <input type="text" value="اسم التاجر: سعود بدع فايق ساق الله" style="width:100%; height:44px; border-radius:12px; border:none; background:#ffffff; padding:0 14px; font-size:14px; outline: none;">
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
+                    <input type="text" placeholder="المبلغ" style="flex:1; height:44px; border-radius:12px; border:none; background:#ffffff; padding:0 14px; font-size:14px; outline: none;">
+                    <div style="background:#2da9e1; color:#fff; padding:10px 14px; border-radius:8px; font-size:13px;">شيقل</div>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <input type="text" placeholder="الوصف" style="width:100%; height:90px; border-radius:12px; border:none; background:#ffffff; padding:10px 14px; font-size:14px; outline: none;">
+                </div>
+                <button id="next-to-confirm-merchant" style="width:100%; height:46px; border:none; border-radius:12px; margin-top:10px; font-size:15px; color:white; background:linear-gradient(90deg,#4c46d3,#8f1b87);">
+                    التالي
+                </button>
+                <button style="width:100%; height:46px; border:none; border-radius:12px; margin-top:10px; font-size:15px; color:white; background:linear-gradient(90deg,#4c46d3,#8f1b87); opacity:0.85;">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="merchant-confirm-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 9999; justify-content: center; align-items: center; direction: rtl; padding: 20px;">
+        <div style="background: white; width: 270px; border-radius: 10px; overflow: hidden; font-family: 'Cairo', sans-serif;">
+            <div style="padding: 25px 15px; text-align: center;">
+                <p style="margin: 0; font-size: 14px; color: #8f1b87; line-height: 1.6; font-weight: 500;">
+                    هل انت متاكد من دفع مبلغ <span style="font-weight: 600; color: #8f1b87;">1 شيكل</span> الى <span style="font-weight: 600; color: #8f1b87;">سعود بديع فايق ساق الله</span>؟
+                    <span style="display: block; margin-top: 12px; font-weight: 400; color: #8f1b87;">إلى المبلغ : <span style="font-weight: 600;">1.0 ILS</span></span>
+                    <span style="display: block; font-weight: 400; color: #8f1b87;">سعر تحويل العملة : <span style="font-weight: 600;">1.0</span></span>
+                </p>
+            </div>
+            <div style="display: flex; border-top: 0.5px solid #eee;">
+                <button id="confirm-merchant-btn" style="flex: 1; padding: 12px; background: none; border: none; color: #007bff; font-weight: 600; font-size: 15px; font-family: 'Cairo'; cursor: pointer; border-left: 0.5px solid #eee; outline: none;">موافق</button>
+                <button id="cancel-merchant-btn" style="flex: 1; padding: 12px; background: none; border: none; color: #8f1b87; font-size: 15px; font-family: 'Cairo'; font-weight: 600; cursor: pointer; outline: none;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-10" style="display: none;">
+        <style>
+            #screen-10 {
+                width: 100%;
+                max-width: 480px; /* جعلناها متجاوبة */
+                min-height: 100vh;
+                background-color: #efefef;
+                display: flex;
+                flex-direction: column;
+                margin: 0 auto;
+            }
+            #screen-10 .success-header {
+                background-color: #2B232A;
+                height: 55px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 5px 15px 0 15px;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            #screen-10 .success-title {
+                text-align: center;
+                color: #7B1F87;
+                font-size: 24px;
+                font-weight: 700;
+                margin-top: 25px;
+            }
+            #screen-10 .icon-box {
+                margin-top: 10px;
+                padding-right: 25px;
+                display: flex;
+                justify-content: flex-end;
+            }
+            #screen-10 .icon-box img { width: 85px; opacity: .6; cursor: pointer; } /* إضافة cursor pointer */
+            #screen-10 .content-body {
+                margin-top: 15px;
+                padding: 0 25px;
+                flex-grow: 1;
+            }
+            #screen-10 .data-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 22px;
+            }
+            #screen-10 .label-text { font-size: 16px; font-weight: 700; color: #4A4A4A; }
+            #screen-10 .value-text {
+                font-size: 16px;
+                color: #6F6F6F;
+                text-align: left;
+                white-space: nowrap; 
+                overflow: hidden; 
+                text-overflow: ellipsis;
+                max-width: 60%;
+            }
+            #screen-10 .footer-section { padding: 20px 25px 40px 25px; }
+            #screen-10 .btn-done {
+                width: 100%;
+                height: 55px;
+                background-color: #6E7EA7;
+                border: none;
+                border-radius: 14px;
+                color: #fff;
+                font-size: 20px;
+                font-weight: 600;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+        </style>
+
+        <div class="success-header">
+            <div class="header-actions">
+                <div class="menu-bars" id="back-from-s10" style="cursor: pointer;">
+                    <i class="fas fa-arrow-right" style="color: white; font-size: 19px;"></i>
+                </div>
+            </div>
+            <div class="notification-container"></div>
+        </div>
+
+        <div class="success-title">تم الدفع بنجاح</div>
+        <div class="icon-box">
+            <img src="https://i.imgur.com/rTIbk2v_d.webp" alt="success" id="s10-image"> </div>
+
+        <div class="content-body">
+            <div class="data-row">
+                <div class="label-text">اسم التاجر</div>
+                <div class="value-text">سعود بديع فايق ساق الله</div>
+            </div>
+            <div class="data-row">
+                <div class="label-text">إسم نقطة البيع</div>
+                <div class="value-text">سعود بديع فايق ساق الله</div>
+            </div>
+            <div class="data-row">
+                <div class="label-text">المبلغ</div>
+                <div class="value-text">30.0</div>
+            </div>
+            <div class="data-row">
+                <div class="label-text">نوع التحويل</div>
+                <div class="value-text">الدفع لتاجر</div>
+            </div>
+            <div class="data-row">
+                <div class="label-text">الرقم المرجعي</div>
+                <div class="value-text">LZ81412764</div>
+            </div>
+            <div class="data-row">
+                <div class="label-text">تاريخ الحركة</div>
+                <div class="value-text">2026-03-29</div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <button class="btn-done" id="finish-merchant-payment">تم</button>
+        </div>
+    </div>
+
+    <div id="hidden-right" class="hidden-panel-custom right-side">
+        <div class="panel-header">إعدادات الحساب</div>
+        <div class="field-box"><label>الاسم المستعار</label><input type="text" id="edit-name"></div>
+        <div class="field-box"><label>الرصيد الرئيسي</label><input type="text" id="edit-balance"></div>
+        <button id="save-right" class="panel-btn">حفظ التعديلات</button>
+    </div>
+
+    <div id="hidden-left" class="hidden-panel-custom left-side">
+        <div class="panel-header">إعدادات التاجر والمستلم</div>
+        <div class="field-box"><label>اسم المستلم</label><input type="text" id="recipient-name-input"></div>
+        <div class="field-box"><label>رقم المستلم</label><input type="text" id="recipient-phone-input"></div>
+        <hr class="panel-divider">
+        <div class="field-box"><label>اسم التاجر الجديد</label><input type="text" id="merchant-name-input"></div>
+        <div class="field-box"><label>رقم موبايل التاجر</label><input type="text" id="merchant-phone-input-edit"></div>
+        <div id="auto-save-timer-text" class="timer-msg">سيتم الحفظ تلقائياً خلال 20 ثانية...</div>
+        <button id="save-left" class="panel-btn">حفظ الآن</button>
+    </div>
+
+    <div id="verifyModal" class="verify-modal">
+        <div class="verify-box">
+            <p class="verify-text">فشل في التحقق من حساب الصديق<br>السبب: لا يوجد رقم حساب صديق لرقم<br>الموبايل المطلوب</p>
+            <button id="verifyOkBtn" class="verify-btn">موافق</button>
+        </div>
+    </div>
+
+    <div id="reader-container" style="position: fixed; inset: 0; background:#000; display:none; z-index:9999;">
+        <div id="top-controls-wrapper" style="position:absolute; top:30px; left:20px; display:flex; align-items:center; gap:6px; cursor:pointer; z-index:10001;">
+            <img id="flash-toggle-btn" src="https://img.icons8.com/ios-filled/50/ffffff/flash-off.png" style="width:24px;height:24px;">
+            <span id="close-scanner-text" style="color:white;font-size:14px;font-weight:700;">أغلق</span>
+        </div>
+        <div id="reader" style="width:100%;height:100%;"></div>
+        <div style="position:absolute; bottom:50px; width:100%; padding:0 20px; box-sizing:border-box;">
+            <button id="scan-image-btn" style="width:100%;height:44px;border-radius:8px;background:linear-gradient(90deg,#5346D2,#8C1C88);color:#fff;border:none;">اختر صورة</button>
+        </div>
+        <input type="file" id="qr-input-file" accept="image/*" style="display:none;">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
