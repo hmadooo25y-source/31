@@ -667,79 +667,7 @@ body {
 
 #merchant-confirm-modal .verify-box {
     padding: 20px 0 0 0; 
-}
-
-/* ===================== واجهة تسجيل الدخول المضافة ===================== */
-:root {
-    --main-gradient: linear-gradient(90deg, #5346D2, #8C1C88);
-    --dark-purple: #2B232A; 
-    --link-color: #8C1C88; 
-}
-
-.login-viewport {
-    width: 100%;
-    height: 100vh;
-    background-color: #f1f1f1;
-    position: relative;
-    overflow-y: auto;
-}
-
-#screen-login .top-bar {
-    width: 100%; height: 60px; background: var(--dark-purple);
-    display: flex; align-items: center; justify-content: flex-start; padding-right: 60px; position: relative;
-}
-#screen-login .top-title { color: #fff; font-size: 1.0rem; font-weight: 700; }
-#screen-login .menu { position: absolute; right: 20px; color: #fff; font-size: 1.5rem; }
-
-#screen-login .lang-container { width: 100%; display: flex; justify-content: flex-end; padding: 20px 20px 0; }
-#screen-login .lang {
-    width: 45px; height: 45px; background: var(--main-gradient);
-    color: #fff; display: flex; align-items: center; justify-content: center;
-    border-radius: 12px; font-weight: 700;
-}
-
-#screen-login .form-container { padding: 20px 25px; text-align: right; }
-#screen-login .group { margin-bottom: 25px; }
-#screen-login label { display: block; font-weight: 700; margin-bottom: 8px; color: #333;}
-#screen-login .login-input {
-    width: 100%; height: 45px; border: none; border-bottom: 2px solid #ccc;
-    background: transparent; font-size: 1.1rem; outline: none; border-radius: 0; padding: 0 10px;
-}
-#screen-login .link { margin-top: 8px; color: var(--link-color); font-size: 0.9rem; font-weight: 700; cursor: pointer; }
-
-#screen-login .login-btn {
-    width: 100%; height: 55px; border: none; border-radius: 14px;
-    font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 15px;
-    background: var(--main-gradient); cursor: pointer;
-}
-
-#screen-login .cards-grid { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
-#screen-login .card-item { flex: 1; max-width: 120px; }
-#screen-login .card-item img { width: 100%; height: auto; }
-
-/* المودال الخاص بتسجيل الدخول */
-.login-modal {
-    display: none; position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%; background: rgba(0,0,0,0.7);
-    justify-content: center; align-items: center; z-index: 9999;
-}
-.login-modal-content {
-    width: 85%; max-width: 350px; background: #fff;
-    border-radius: 20px; padding: 25px; text-align: right;
-}
-.login-modal .modal-title { color: var(--link-color); font-size: 1.3rem; margin-bottom: 5px; }
-.login-modal .modal-sub { font-size: 0.95rem; font-weight: 600; margin-bottom: 20px; color: #333;}
-
-.login-modal .code-inputs { display: flex; justify-content: space-between; margin-bottom: 20px; direction: ltr; }
-.login-modal .code-inputs input {
-    width: 50px; height: 55px; text-align: center; font-size: 1.5rem;
-    border: 2px solid #ddd; border-radius: 10px; background: #fff;
-}
-
-.login-modal .modal-footer { width: 100%; display: flex; justify-content: flex-end; }
-.login-modal .cancel-btn { color: var(--link-color); font-size: 0.85rem; font-weight: 700; cursor: pointer; }
-
-/* ===================== واجهة تفاصيل الحساب المضافة ===================== */
+}/* ===================== واجهة تفاصيل الحساب المضافة ===================== */
 .acc-details-screen {
     width: 100%;
     max-width: 480px;
@@ -750,26 +678,20 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-..acc-content {
-    flex: 1; /* ليأخذ المساحة المتبقية من الشاشة بالكامل */
-    display: flex;
+/* حل مشكلة التمرير وتجاوز كود الجافاسكربت الذي يحولها إلى block */
+.acc-details-screen .main-content {
+    display: flex !important; 
     flex-direction: column;
-    overflow: hidden;
+    overflow: hidden !important; 
+    height: calc(100vh - 55px); /* لخصم ارتفاع الهيدر العلوي */
     padding: 0;
     background-color: #f8f8f8;
 }
 
+/* الجزء العلوي الثابت */
 .acc-top-fixed-part { 
     flex-shrink: 0; 
 }
-
-.acc-table-container {
-    flex-grow: 1; /* لجعل الجدول يتمدد ويملأ باقي المساحة السفلية */
-    overflow-y: auto;
-    background-color: #ffffff;
-    height: 100%;
-}
-.acc-top-fixed-part { flex-shrink: 0; }
 
 .acc-main-title {
     color: #8b2b69;
@@ -829,14 +751,17 @@ body {
 
 .acc-divider { height: 8px; background-color: #f8f8f8; width: 100%; }
 
+/* حاوية الجدول (الجزء القابل للتمرير) */
 .acc-table-container {
     flex-grow: 1;
     overflow-y: auto;
     background-color: #ffffff;
+    height: 100%;
 }
 
 .acc-statement-table { width: 100%; border-collapse: collapse; }
 
+/* تثبيت عناوين الجدول في الأعلى */
 .acc-statement-table th {
     font-weight: 600;
     font-size: 15px;
@@ -846,7 +771,7 @@ body {
     top: 0;
     background-color: #ffffff;
     z-index: 10;
-    box-shadow: inset 0 1px 0 #dcdcdc, inset 0 -1px 0 #dcdcdc;
+    box-shadow: inset 0 -2px 0 #dcdcdc; /* خط فاصل سفلي ثابت أثناء النزول */
 }
 
 .acc-col-date {
@@ -877,3 +802,4 @@ body {
     display: block;
     margin-bottom: 4px;
 }
+
