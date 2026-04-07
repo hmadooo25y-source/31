@@ -38,7 +38,7 @@ let currentActiveScreen = 'login';
 function showScreen(targetKey) {
     if (loadingTimeout) clearTimeout(loadingTimeout);
 
-     const screensWithLoading = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9'];
+     const screensWithLoading = ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's10'];
     
     if (screensWithLoading.includes(targetKey)) {
         let currentScreen = document.querySelector('.app-screen[style*="display: block"], .app-screen[style*="display: flex"], .payment-view[style*="display: block"], .payment-view[style*="display: flex"]');
