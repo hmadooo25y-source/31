@@ -310,7 +310,7 @@ body {
     left: 20px;
     width: 55px;
     height: 55px;
-    background-color: #9c27b0;
+    background-color: #8f1b87;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -439,7 +439,7 @@ body {
 
 #screen-6 .success-message {
     font-size: 20px;
-    color: #9c27b0;
+    color: #8f1b87;
     font-weight: 600;
     text-align: center;
     margin-bottom: 20px;
@@ -468,7 +468,7 @@ body {
 #screen-6 .receiver-info .name {
     font-size: 18px;
     font-weight: 600;
-    color: #9c27b0;
+    color: #8f1b87;
     margin-bottom: 5px;
     text-align: center;
 }
@@ -503,7 +503,7 @@ body {
 #screen-6 .transaction-row { font-size: 16px; }
 
 #screen-6 .amount-row .label, #screen-6 .transaction-row .label { text-align: right; }
-#screen-6 .amount-row .value, #screen-6 .transaction-row .value { text-align: left; color: #9c27b0; font-weight: 700; }
+#screen-6 .amount-row .value, #screen-6 .transaction-row .value { text-align: left; color: #8f1b87; font-weight: 700; }
 
 #screen-6 .confirm-button-container {
     width: 100%;
