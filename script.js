@@ -305,7 +305,7 @@ document.getElementById('confirmBtn')?.addEventListener('click', function() {
 
     document.getElementById('display-name').textContent = recipientNameEl.textContent;
     document.getElementById('display-phone').textContent = recipientPhoneEl.textContent || '---';
-    document.getElementById('display-amount').textContent = total.toFixed(2) + ' ILS';
+    document.getElementById('display-amount').textContent = total.toFixed(1) + ' ILS';
     document.getElementById('display-code').textContent = random9DigitCode;
 
     showScreen('s6');
