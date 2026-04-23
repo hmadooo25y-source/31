@@ -733,7 +733,7 @@ codeInputs.forEach((input, index) => {
 
         if (e.target.value.length === 1) {
             input.dataset.realValue = e.target.value;
-            input.value = "★";
+            input.value = "*";
             if (index < codeInputs.length - 1) codeInputs[index + 1].focus();
             else setTimeout(checkPassword, 100);
         }
